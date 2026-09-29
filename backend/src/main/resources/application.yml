@@ -1,0 +1,106 @@
+spring:
+  application:
+    name: ai-job-radar
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/aicareer}
+    username: ${DB_USERNAME:aicareer}
+    password: ${DB_PASSWORD:aicareer}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    show-sql: ${SHOW_SQL:false}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: ${FLYWAY_ENABLED:false}
+    locations: classpath:db/migration
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 5000
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+app:
+  ollama:
+    base-url: ${OLLAMA_URL:http://localhost:11434}
+    chat-model: ${OLLAMA_CHAT_MODEL:llama3.2}
+    embed-model: ${OLLAMA_EMBED_MODEL:nomic-embed-text}
+
+  jwt:
+    secret: ${JWT_SECRET:default-secret-change-in-production-needs-256-bits}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}   # 24 h
+
+  telegram:
+    bot-token: ${TELEGRAM_BOT_TOKEN:}
+    bot-username: ${TELEGRAM_BOT_USERNAME:AIJobRadarBot}
+
+  scanning:
+    interval-minutes: ${SCAN_INTERVAL_MINUTES:5}
+    enabled: ${SCAN_ENABLED:true}
+
+  resume:
+    upload-dir: ${RESUME_UPLOAD_DIR:uploads/resumes}
+
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:5173}
+
+  scrapers:
+    # Greenhouse/Lever/Ashby are ATS platforms — no global search API exists.
+    # Leave these empty; the aggregators below cover all companies globally.
+    greenhouse-slugs: []
+    lever-slugs: []
+    ashby-slugs: []
+    remoteok-enabled: ${REMOTEOK_ENABLED:true}
+    remoteok-tags: ${REMOTEOK_TAGS:java,python,react,node,typescript,golang}
+    remotive-enabled: ${REMOTIVE_ENABLED:true}
+    workable-enabled: ${WORKABLE_ENABLED:true}
+    naukri-enabled: ${NAUKRI_ENABLED:false}
+
+logging:
+  level:
+    com.aicareer: ${LOG_LEVEL:INFO}
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN

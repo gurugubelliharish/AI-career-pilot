@@ -1,0 +1,25 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  flyway:
+    enabled: true
+
+server:
+  tomcat:
+    max-threads: 200
+    min-spare-threads: 20
+
+logging:
+  level:
+    com.aicareer: INFO
+    org.springframework.security: WARN
+
+management:
+  health:
+    mail:
+      enabled: false   # mail credentials optional; don't fail health check
+  endpoint:
+    health:
+      show-details: never

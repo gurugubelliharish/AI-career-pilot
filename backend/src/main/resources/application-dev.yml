@@ -1,0 +1,20 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  flyway:
+    enabled: false
+
+logging:
+  level:
+    com.aicareer: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+
+app:
+  scanning:
+    enabled: false    # disable background scrapers during local dev
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:5173
